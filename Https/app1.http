@@ -1,0 +1,40 @@
+//http://localhost:5041
+
+GET http://localhost:5041/tasks?page=1&pageSize=10
+
+
+###
+
+
+GET http://localhost:5041/tasks/2
+
+
+###
+
+
+POST http://localhost:5041/tasks
+Content-Type: application/json
+
+{
+  "Name": "femboy sex",
+  "Description": "swag boi"
+}
+
+
+###
+
+
+PUT http://localhost:5041/tasks/2
+Content-Type: application/json
+
+{
+  "Name": " sex",
+  "Description": "swag changed",
+  "IsDone": true
+}
+
+
+###
+
+
+DELETE http://localhost:5041/tasks/9

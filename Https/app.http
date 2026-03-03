@@ -1,0 +1,41 @@
+//http://localhost:5041
+
+GET http://localhost:5041/tasks
+
+
+###
+
+
+GET http://localhost:5041/tasks/6
+
+
+###
+
+
+POST http://localhost:5041/tasks
+Content-Type: application/json
+
+{
+  "Name": "name swaga",
+  "Description": "swag",
+  "IsDone": true,
+}
+
+
+###
+
+
+PUT http://localhost:5041/tasks/6
+Content-Type: application/json
+
+{
+  "Name": " sex",
+  "Description": "swag",
+  "IsDone": true
+}
+
+
+###
+
+
+DELETE http://localhost:5041/tasks/6
