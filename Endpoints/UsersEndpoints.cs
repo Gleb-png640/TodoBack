@@ -48,10 +48,10 @@ namespace TodoBack.Endpoints {
             });
             
             // ye
-            //group.MapGet("auth", () =>
-            //{ 
-            //    return Results.Ok("you are authorized");
-            //}).RequireAuthorization();
+            group.MapGet("auth", () =>
+            { 
+                return Results.Ok("you are authorized");
+            }).RequireAuthorization();
         }
     }
 }
