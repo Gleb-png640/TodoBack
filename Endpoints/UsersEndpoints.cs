@@ -46,12 +46,7 @@ namespace TodoBack.Endpoints {
 
                 return Results.Ok(token);
             });
-            
-            // ye
-            group.MapGet("auth", () =>
-            { 
-                return Results.Ok("you are authorized");
-            }).RequireAuthorization();
+
         }
     }
 }

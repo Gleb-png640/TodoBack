@@ -5,15 +5,13 @@ using TodoBack.QueryParameters;
 namespace TodoBack.Repositories {
     public interface ITaskRepository {
 
-        IEnumerable<TaskCommon> GetPaged(GetPageQuery query);
+        public IEnumerable<TaskCommon> GetPaged(GetPageQuery query, Guid UserId);
 
-        TaskCommon? GetById(int id);
+        public TaskCommon? GetById(int id, Guid UserId);
 
-        TaskCommon Add(TaskCommon task);
+        public TaskCommon Add(TaskCommon task);
 
-        bool Update(TaskCommon task);
-
-        bool Delete(TaskCommon task);
+        public bool Delete(TaskCommon task);
 
         public TaskCommon ChangeExistingTask(TaskCommon task, UpdateTaskCommonDto taskDto);
     }
