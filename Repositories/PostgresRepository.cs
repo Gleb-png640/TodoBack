@@ -30,9 +30,11 @@ namespace TodoBack.Repositories {
             return true;
         }
 
-        public IEnumerable<TaskCommon> GetPaged(GetPageQuery query) {
+        public IEnumerable<TaskCommon> GetPaged(GetPageQuery query, Guid UserId) {
 
-            IQueryable<TaskCommon> queryable = _db.Tasks.AsNoTracking();
+            IQueryable<TaskCommon> queryable = _db.Tasks
+                .Where(t => t.UserId == UserId)
+                .AsNoTracking();
 
             if (query.isDone is not null) {
                 queryable = queryable.Where(t => t.IsDone == query.isDone);
@@ -52,34 +54,15 @@ namespace TodoBack.Repositories {
 
 
 
-        public TaskCommon? GetById(int id) {
-            var task = _db.Tasks.Find(id);
+        public TaskCommon? GetById(int id, Guid UserId) {
+            var task = _db.Tasks
+                .AsNoTracking()
+                .FirstOrDefault(t => t.UserId == UserId && t.TaskId == id);
 
             return task;
         }
 
-        public bool Update(TaskCommon task) {
-            /*
-             
-             Переписать с ExecuteUpdate
-             
-             */
-
-
-            _db.Update(task);
-            _db.SaveChanges();
-
-            return true;
-        }
-
         public TaskCommon ChangeExistingTask(TaskCommon task, UpdateTaskCommonDto taskDto) {
-
-
-            /*
-             
-             Переписать с ExecuteUpdate
-             
-             */
 
             task.Name = taskDto.Name;
             task.Description = taskDto.Description;
@@ -87,7 +70,17 @@ namespace TodoBack.Repositories {
             //task.DateCreated = taskDto.DateCreated;
             //task.DateDueTo = taskDto.DateDueTo;
 
+            Update(task);
             return task;
+        }
+
+        private bool Update(TaskCommon task)
+        {
+
+            _db.Update(task);
+            _db.SaveChanges();
+
+            return true;
         }
     }
 }
