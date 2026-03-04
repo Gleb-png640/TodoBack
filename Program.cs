@@ -11,9 +11,6 @@ namespace TodoBack
 
             builder.AddServices(configuration);
 
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
-
             var app = builder.Build();
 
             app.AddMiddleware();
@@ -25,9 +22,6 @@ namespace TodoBack
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-
-
-            //app.MapGet("/hello", () => "Hello World!");
 
             app.Run();
         }
