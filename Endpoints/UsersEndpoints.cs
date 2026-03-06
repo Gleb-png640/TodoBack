@@ -40,13 +40,22 @@ namespace TodoBack.Endpoints {
                 var result = validator.Validate(dto);
                 if (!result.IsValid) { return Results.ValidationProblem(result.ToDictionary()); }
 
-                string? token = repo.Login(dto, passwordHasher, jwt);
+                var response = repo.Login(dto, passwordHasher, jwt);
 
-                if (token is null) { return Results.BadRequest("Incorrect email or password"); } 
+                if (response is null) { return Results.Unauthorized(); } 
 
-                return Results.Ok(token);
+                return Results.Ok(response);
             });
 
+
+            group.MapPost("/refresh-token", (RefreshTokenRequestDto dto, IUserRepository repo, JwtTokenServices jwt) =>
+            {
+                var result = repo.RefreshTokens(dto, jwt);
+
+                if (result is null) { return Results.Unauthorized(); }
+
+                return Results.Ok(result);
+            });
         }
     }
 }
