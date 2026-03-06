@@ -9,6 +9,8 @@ namespace TodoBack.Repositories {
 
         User? GetByEmail(string email);
 
-        public string? Login(LoginUserDto dto, IPasswordHasher<User> passwordHasher, JwtTokenServices jwt);
+        public TokenResponeDto? Login(LoginUserDto dto, IPasswordHasher<User> passwordHasher, JwtTokenServices jwt);
+
+        public TokenResponeDto? RefreshTokens(RefreshTokenRequestDto dto, JwtTokenServices jwt);
     }
 }

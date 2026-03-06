@@ -14,5 +14,8 @@ namespace TodoBack.Models.Users {
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         public ICollection<TaskCommon> Tasks { get; set; } = new List<TaskCommon>();
+
+        public string?  RefreshToken { get; set; }
+        public DateTime RefreshTokenExpiryTime { get; set; }
     }
 }
