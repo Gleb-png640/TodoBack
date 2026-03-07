@@ -9,8 +9,5 @@ namespace TodoBack.Models.Tasks {
 
         public User User { get; set; }
         public Guid UserId { get; set; }
-
-        //public DateTime DateCreated { get; set; }
-        //public DateTime DateDueTo { get; set; }
     }
 }
