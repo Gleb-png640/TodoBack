@@ -21,10 +21,7 @@ namespace TodoBack.Configurations
 
         public static WebApplicationBuilder AddServices(this WebApplicationBuilder builder, ConfigurationManager configuration)
         {
-
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
-
+            SwaggerWithAuth.AddSwaggerWithAuth(builder);
 
             builder.Services.AddDbContext<TodoDbContext>(options =>
             {

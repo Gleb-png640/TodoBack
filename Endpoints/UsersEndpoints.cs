@@ -40,18 +40,13 @@ namespace TodoBack.Endpoints {
                 var result = validator.Validate(dto);
                 if (!result.IsValid) { return Results.ValidationProblem(result.ToDictionary()); }
 
-                string? token = repo.Login(dto, passwordHasher, jwt);
+                var response = repo.Login(dto, passwordHasher, jwt);
 
-                if (token is null) { return Results.BadRequest("Incorrect email or password"); } 
+                if (response is null) { return Results.Unauthorized(); } 
 
-                return Results.Ok(token);
+                return Results.Ok(response);
             });
-            
-            // ye
-            //group.MapGet("auth", () =>
-            //{ 
-            //    return Results.Ok("you are authorized");
-            //}).RequireAuthorization();
+
         }
     }
 }

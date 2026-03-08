@@ -1,0 +1,7 @@
+﻿namespace TodoBack.Dtos.Users
+{
+    public class RefreshTokenRequestDto
+    {
+        public required string RefreshToken { get; set; }
+    }
+}
