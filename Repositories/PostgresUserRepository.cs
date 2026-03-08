@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System.Security.Cryptography;
+using System.Text;
 using TodoBack.Data;
 using TodoBack.Dtos.Users;
 using TodoBack.Models.Users;
@@ -24,14 +26,6 @@ namespace TodoBack.Repositories {
                 .FirstOrDefault(u => u.Email == email);
         }
 
-
-        private User? FindById(Guid userId)
-        {
-            return _db.Users
-                .Where(u => u.Id == userId)
-                .FirstOrDefault();
-        }
-
         public TokenResponeDto? Login(LoginUserDto dto, IPasswordHasher<User> passwordHasher, JwtTokenServices jwt) {
 
             // Searching by email in DB
@@ -44,15 +38,13 @@ namespace TodoBack.Repositories {
 
             TokenResponeDto response = CreateTokenResponse(jwt, user);
 
-            _db.SaveChanges();
-
             return response;
         }
 
 
         public TokenResponeDto? RefreshTokens(RefreshTokenRequestDto dto, JwtTokenServices jwt)
         {
-            var user = ValidateRefreshToken(dto.UserId, dto.RefreshToken);
+            var user = ValidateRefreshToken(dto.RefreshToken);
 
             if (user is null) { return null; }
 
@@ -61,9 +53,11 @@ namespace TodoBack.Repositories {
             return response;
         }
 
-        private User? ValidateRefreshToken(Guid userId, string token) 
+        private User? ValidateRefreshToken(string refreshToken) 
         {
-            var user = FindById(userId);
+            var token = HashRefreshToken(refreshToken);
+
+            var user = _db.Users.FirstOrDefault(u => u.RefreshToken == token);
 
             if (user is null || user.RefreshToken != token || user.RefreshTokenExpiryTime <= DateTime.UtcNow) { return null; }
 
@@ -74,11 +68,18 @@ namespace TodoBack.Repositories {
         private TokenResponeDto CreateTokenResponse(JwtTokenServices jwt, User user)
         {
             TokenResponeDto response = jwt.CreateJWT(user);
-            user.RefreshToken = response.RefreshToken;
+
+            user.RefreshToken = HashRefreshToken(response.RefreshToken);
             user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(10);
 
             _db.SaveChanges();
             return response;
+        }
+
+        private string HashRefreshToken(string token) 
+        {
+            var bytes = SHA256.HashData(Encoding.UTF8.GetBytes(token));
+            return Encoding.UTF8.GetString(bytes);
         }
     }
 }
