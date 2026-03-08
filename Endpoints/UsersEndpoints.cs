@@ -47,15 +47,6 @@ namespace TodoBack.Endpoints {
                 return Results.Ok(response);
             });
 
-
-            group.MapPost("/refresh-token", (RefreshTokenRequestDto dto, IUserRepository repo, JwtTokenServices jwt) =>
-            {
-                var result = repo.RefreshTokens(dto, jwt);
-
-                if (result is null) { return Results.Unauthorized(); }
-
-                return Results.Ok(result);
-            });
         }
     }
 }
