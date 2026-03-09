@@ -25,6 +25,5 @@ namespace TodoBack.Models.Tasks {
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         public User User { get; set; }
-        public Guid UserId { get; set; }
     }
 }

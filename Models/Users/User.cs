@@ -13,7 +13,7 @@ namespace TodoBack.Models.Users {
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-        public ICollection<TaskCommon> Tasks { get; set; } = new List<TaskCommon>();
+        public ICollection<UserTask> Tasks { get; set; } = new List<UserTask>();
 
         public string?  RefreshToken { get; set; }
         public DateTime RefreshTokenExpiryTime { get; set; }

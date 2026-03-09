@@ -25,7 +25,7 @@ namespace TodoBack.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("TodoBack.Models.Tasks.TaskCommon", b =>
+            modelBuilder.Entity("TodoBack.Models.Tasks.UserTask", b =>
                 {
                     b.Property<int>("TaskId")
                         .ValueGeneratedOnAdd()
@@ -86,7 +86,7 @@ namespace TodoBack.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("TodoBack.Models.Tasks.TaskCommon", b =>
+            modelBuilder.Entity("TodoBack.Models.Tasks.UserTask", b =>
                 {
                     b.HasOne("TodoBack.Models.Users.User", "User")
                         .WithMany("Tasks")

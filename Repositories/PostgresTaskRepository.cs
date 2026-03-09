@@ -30,9 +30,9 @@ namespace TodoBack.Repositories {
             return true;
         }
 
-        public IEnumerable<TaskCommon> GetPaged(GetPageQuery query, Guid UserId) {
+        public IEnumerable<UserTask> GetPaged(GetPageQuery query, Guid UserId) {
 
-            IQueryable<TaskCommon> queryable = _db.Tasks
+            IQueryable<UserTask> queryable = _db.Tasks
                 .Where(t => t.UserId == UserId)
                 .AsNoTracking();
 
@@ -54,7 +54,7 @@ namespace TodoBack.Repositories {
 
 
 
-        public TaskCommon? GetById(int id, Guid UserId) {
+        public UserTask? GetById(int id, Guid UserId) {
             var task = _db.Tasks
                 .AsNoTracking()
                 .FirstOrDefault(t => t.UserId == UserId && t.TaskId == id);
@@ -62,7 +62,15 @@ namespace TodoBack.Repositories {
             return task;
         }
 
-        public TaskCommon ChangeExistingTask(TaskCommon task, UpdateTaskCommonDto taskDto) {
+        public UserTask? GetByIdTracked(int id, Guid UserId)
+        {
+            var task = _db.Tasks
+                .FirstOrDefault(t => t.UserId == UserId && t.TaskId == id);
+
+            return task;
+        }
+
+        public UserTask ChangeExistingTask(UserTask task, UpdateUserTaskDto taskDto) {
 
             task.Name = taskDto.Name;
             task.Description = taskDto.Description;
@@ -73,12 +81,10 @@ namespace TodoBack.Repositories {
             task.DueTo = taskDto.DueTo;
 
             Update(task);
-
-            Update(task);
             return task;
         }
 
-        private bool Update(TaskCommon task)
+        private bool Update(UserTask task)
         {
 
             _db.Update(task);

@@ -22,14 +22,21 @@ namespace TodoBack.Mapping {
             };
         }
 
-        public static TaskCommon DtoToEntity(this CreateTaskCommonDto task, Guid id) {
+        public static UserTask DtoToEntity(this CreateUserTaskDto task, Guid userId) {
 
             return new UserTask
-            { 
-                Name = task.Name, 
+            {
+				UserId = userId,
+
+				Name = task.Name,
                 Description = task.Description,
-                IsDone = false,
-                UserId = id
+
+                IsDone = task.IsDone,
+
+                TaskType = task.TaskType,
+
+                DueTo = task.DueTo,
+                From = task.From,
             };
         }
     }

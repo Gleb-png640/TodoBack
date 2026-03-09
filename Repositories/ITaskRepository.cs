@@ -8,13 +8,13 @@ namespace TodoBack.Repositories
     {
         public UserTask Add(UserTask task);
 
-        public IEnumerable<TaskCommon> GetPaged(GetPageQuery query, Guid UserId);
+        public IEnumerable<UserTask> GetPaged(GetPageQuery query, Guid UserId);
 
-        public TaskCommon? GetById(int id, Guid UserId);
+        public UserTask? GetById(int id, Guid UserId);
+        public UserTask? GetByIdTracked(int id, Guid UserId);
 
-        public TaskCommon Add(TaskCommon task);
 
-        public bool Delete(TaskCommon task);
+		public bool Delete(UserTask task);
 
         public UserTask ChangeExistingTask(UserTask task, UpdateUserTaskDto taskDto);
     }

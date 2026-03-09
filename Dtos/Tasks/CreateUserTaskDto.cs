@@ -8,6 +8,8 @@ namespace TodoBack.Dtos.Tasks
         [Required] public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
 
+        public bool IsDone { get; set; } = false;
+
         public TaskType TaskType { get; set; }
 
         public DateTime? DueTo { get; set; }
