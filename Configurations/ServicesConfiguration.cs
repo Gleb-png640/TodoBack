@@ -45,14 +45,14 @@ namespace TodoBack.Configurations
 
             builder.Services.AddSingleton<JwtTokenServices>();
 
-            builder.Services.AddScoped<IValidator<CreateTaskCommonDto>, CreateTaskValidation>();
-            builder.Services.AddScoped<IValidator<UpdateTaskCommonDto>, UpdateTaskValidation>();
+            builder.Services.AddScoped<IValidator<CreateUserTaskDto>, CreateUserTaskValidation>();
+            builder.Services.AddScoped<IValidator<UpdateUserTaskDto>, UpdateUserTaskValidation>();
             builder.Services.AddScoped<IValidator<CreateUserDto>, CreateUserValidation>();
             builder.Services.AddScoped<IValidator<LoginUserDto>, LoginUserValidation>();
 
-            builder.Services.AddScoped<IValidator<GetPageQuery>, GetTasksValidation>();
+            builder.Services.AddScoped<IValidator<GetPageQuery>, GetPageQueryValidation>();
 
-            builder.Services.AddScoped<ITaskRepository, PostgresRepository>();
+            builder.Services.AddScoped<ITaskRepository, PostgresTaskRepository>();
             builder.Services.AddScoped<IUserRepository, PostgresUserRepository>();
 
             builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();

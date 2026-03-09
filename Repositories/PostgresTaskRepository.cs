@@ -5,24 +5,24 @@ using TodoBack.Models.Tasks;
 using TodoBack.QueryParameters;
 
 namespace TodoBack.Repositories {
-    public class PostgresRepository : ITaskRepository {
+    public class PostgresTaskRepository : ITaskRepository {
 
         private readonly TodoDbContext _db;
 
-        public PostgresRepository(TodoDbContext db)
+        public PostgresTaskRepository(TodoDbContext db)
         {
             _db = db;
         }
 
-        public TaskCommon Add(TaskCommon task) {
+        public UserTask Add(UserTask task) {
 
-            _db.Add(task);
+            _db.Tasks.Add(task);
             _db.SaveChanges();
 
             return task;
         }
 
-        public bool Delete(TaskCommon task) {
+        public bool Delete(UserTask task) {
 
             _db.Remove(task);
             _db.SaveChanges();
@@ -44,7 +44,7 @@ namespace TodoBack.Repositories {
             int _page = query.page;
             int _pageSize = query.pageSize;
 
-            IEnumerable<TaskCommon> result = queryable
+            IEnumerable<UserTask> result = queryable
                 .Skip( (_page - pageOffset) * _pageSize)
                 .Take(_pageSize)
                 .ToList();
@@ -66,9 +66,13 @@ namespace TodoBack.Repositories {
 
             task.Name = taskDto.Name;
             task.Description = taskDto.Description;
+
             task.IsDone = taskDto.IsDone;
-            //task.DateCreated = taskDto.DateCreated;
-            //task.DateDueTo = taskDto.DateDueTo;
+
+            task.From = taskDto.From;
+            task.DueTo = taskDto.DueTo;
+
+            Update(task);
 
             Update(task);
             return task;

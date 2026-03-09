@@ -9,20 +9,20 @@ namespace TodoBack.Data {
         : DbContext(options)
     {
 
-        public DbSet<TaskCommon> Tasks => Set<TaskCommon>();
+        public DbSet<UserTask> Tasks => Set<UserTask>();
         public DbSet<User> Users => Set<User>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<TaskCommon>()
+            modelBuilder.Entity<UserTask>()
                 .HasKey(k => k.TaskId);
 
-            modelBuilder.Entity<TaskCommon>()
+            modelBuilder.Entity<UserTask>()
                 .Property(k => k.TaskId)
                 .ValueGeneratedOnAdd();
 
-            modelBuilder.Entity<TaskCommon>()
+            modelBuilder.Entity<UserTask>()
                 .HasOne(t => t.User)
                 .WithMany(u => u.Tasks)
                 .HasForeignKey(t => t.UserId);

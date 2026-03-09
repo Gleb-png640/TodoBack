@@ -2,8 +2,11 @@
 using TodoBack.Models.Tasks;
 using TodoBack.QueryParameters;
 
-namespace TodoBack.Repositories {
-    public interface ITaskRepository {
+namespace TodoBack.Repositories
+{
+    public interface ITaskRepository
+    {
+        public UserTask Add(UserTask task);
 
         public IEnumerable<TaskCommon> GetPaged(GetPageQuery query, Guid UserId);
 
@@ -13,6 +16,6 @@ namespace TodoBack.Repositories {
 
         public bool Delete(TaskCommon task);
 
-        public TaskCommon ChangeExistingTask(TaskCommon task, UpdateTaskCommonDto taskDto);
+        public UserTask ChangeExistingTask(UserTask task, UpdateUserTaskDto taskDto);
     }
 }
