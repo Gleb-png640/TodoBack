@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 using System.Text;
 using TodoBack.Data;
@@ -7,6 +8,7 @@ using TodoBack.Models.Users;
 using TodoBack.Services.Security;
 
 namespace TodoBack.Repositories {
+
     public class PostgresUserRepository : IUserRepository {
 
         private readonly TodoDbContext _db;
@@ -15,71 +17,72 @@ namespace TodoBack.Repositories {
             _db = db;
         }
 
-        public User AddUser(User user) {
-            _db.Users.Add(user);
-            _db.SaveChanges();
+        public async Task<User> AddUserAsync(User user) {
+            await _db.Users.AddAsync(user);
+            await _db.SaveChangesAsync();
             return user;
         }
 
-        public User? GetByEmail(string email) {
-            return _db.Users
-                .FirstOrDefault(u => u.Email == email);
+        public async Task<User?> GetByEmailAsync(string email) {
+            return await _db.Users
+                .FirstOrDefaultAsync(u => u.Email == email);
         }
 
-        public TokenResponeDto? Login(LoginUserDto dto, IPasswordHasher<User> passwordHasher, JwtTokenServices jwt) {
+        public async Task<TokenResponeDto?> LoginAsync(LoginUserDto dto, IPasswordHasher<User> passwordHasher, JwtTokenServices jwt) {
 
             // Searching by email in DB
-            var user = GetByEmail(dto.Email);
+            var user = await GetByEmailAsync(dto.Email);
             if (user is null) { return null; }
 
             // Verifying password
             var passwordVerificationResult = passwordHasher.VerifyHashedPassword(user, user.PasswordHash, dto.Password);
             if (passwordVerificationResult == PasswordVerificationResult.Failed) { return null; }
 
-            TokenResponeDto response = CreateTokenResponse(jwt, user);
+            TokenResponeDto response = await CreateTokenResponseAsync(jwt, user);
 
             return response;
         }
 
 
-        public TokenResponeDto? RefreshTokens(RefreshTokenRequestDto dto, JwtTokenServices jwt)
+        public async Task<TokenResponeDto?> RefreshTokensAsync(RefreshTokenRequestDto dto, JwtTokenServices jwt)
         {
-            var user = ValidateRefreshToken(dto.RefreshToken);
+            var user = await ValidateRefreshTokenAsync(dto.RefreshToken);
 
             if (user is null) { return null; }
 
-            TokenResponeDto response = CreateTokenResponse(jwt, user);
+            TokenResponeDto response = await CreateTokenResponseAsync(jwt, user);
 
             return response;
         }
 
-        private User? ValidateRefreshToken(string refreshToken) 
+        private async Task<User?> ValidateRefreshTokenAsync(string refreshToken) 
         {
             var token = HashRefreshToken(refreshToken);
 
-            var user = _db.Users.FirstOrDefault(u => u.RefreshToken == token);
+            var user = await _db.Users.FirstOrDefaultAsync(u => u.RefreshToken == token);
 
-            if (user is null || user.RefreshToken != token || user.RefreshTokenExpiryTime <= DateTime.UtcNow) { return null; }
+            if (user is null || user.RefreshTokenExpiryTime <= DateTime.UtcNow) { return null; }
 
             return (user);
         }
 
 
-        private TokenResponeDto CreateTokenResponse(JwtTokenServices jwt, User user)
+        private async Task<TokenResponeDto> CreateTokenResponseAsync(JwtTokenServices jwt, User user)
         {
             TokenResponeDto response = jwt.CreateJWT(user);
 
             user.RefreshToken = HashRefreshToken(response.RefreshToken);
             user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(10);
 
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
+
             return response;
         }
 
         private string HashRefreshToken(string token) 
         {
             var bytes = SHA256.HashData(Encoding.UTF8.GetBytes(token));
-            return Encoding.UTF8.GetString(bytes);
+            return Convert.ToBase64String(bytes);
         }
     }
 }

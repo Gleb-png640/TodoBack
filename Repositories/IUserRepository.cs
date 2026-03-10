@@ -4,13 +4,15 @@ using TodoBack.Models.Users;
 using TodoBack.Services.Security;
 
 namespace TodoBack.Repositories {
-    public interface IUserRepository {
-        User AddUser(User user);
 
-        User? GetByEmail(string email);
+    public interface IUserRepository 
+    {
+        public Task<User> AddUserAsync(User user);
 
-        public TokenResponeDto? Login(LoginUserDto dto, IPasswordHasher<User> passwordHasher, JwtTokenServices jwt);
+        public Task<User?> GetByEmailAsync(string email);
 
-        public TokenResponeDto? RefreshTokens(RefreshTokenRequestDto dto, JwtTokenServices jwt);
+        public Task<TokenResponeDto?> LoginAsync(LoginUserDto dto, IPasswordHasher<User> passwordHasher, JwtTokenServices jwt);
+
+        public Task<TokenResponeDto?> RefreshTokensAsync(RefreshTokenRequestDto dto, JwtTokenServices jwt);
     }
 }

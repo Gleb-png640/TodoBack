@@ -16,31 +16,31 @@ namespace TodoBack.Endpoints {
 
 
             // POST /users/register
-            group.MapPost("/register", (CreateUserDto dto, IUserRepository repo, IPasswordHasher<User> passwordHasher, IValidator<CreateUserDto> validator, JwtTokenServices jwt) =>
+            group.MapPost("/register", async (CreateUserDto dto, IUserRepository repo, IPasswordHasher<User> passwordHasher, IValidator<CreateUserDto> validator, JwtTokenServices jwt) =>
             {
 
                 // Validation
-                var result = validator.Validate(dto);
+                var result = await validator.ValidateAsync(dto);
                 if (!result.IsValid) { return Results.ValidationProblem(result.ToDictionary()); }
 
                 // Searching by email in DB
-                if (repo.GetByEmail(dto.Email) is not null) { return Results.Conflict("User already exists"); }
+                if (await repo.GetByEmailAsync(dto.Email) is not null) { return Results.Conflict("User already exists"); }
 
                 var user = dto.CreateDtoToEntity(passwordHasher);
 
-                repo.AddUser(user);
+                await repo.AddUserAsync(user);
 
                 return Results.Created($"/users/{user.Id}", user.EntityToDto());
             });
 
 
             // POST /users/login 
-            group.MapPost("/login", (LoginUserDto dto, IValidator<LoginUserDto> validator, IUserRepository repo, IPasswordHasher<User> passwordHasher, JwtTokenServices jwt) => 
+            group.MapPost("/login", async (LoginUserDto dto, IValidator<LoginUserDto> validator, IUserRepository repo, IPasswordHasher<User> passwordHasher, JwtTokenServices jwt) => 
             {
-                var result = validator.Validate(dto);
+                var result = await validator.ValidateAsync(dto);
                 if (!result.IsValid) { return Results.ValidationProblem(result.ToDictionary()); }
 
-                var response = repo.Login(dto, passwordHasher, jwt);
+                var response = await repo.LoginAsync(dto, passwordHasher, jwt);
 
                 if (response is null) { return Results.Unauthorized(); } 
 

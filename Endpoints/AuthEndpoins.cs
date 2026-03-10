@@ -11,9 +11,9 @@ namespace TodoBack.Endpoints {
             var group = app.MapGroup("auth");
 
 
-            group.MapPost("/refresh", (RefreshTokenRequestDto dto, IUserRepository repo, JwtTokenServices jwt) =>
+            group.MapPost("/refresh", async (RefreshTokenRequestDto dto, IUserRepository repo, JwtTokenServices jwt) =>
             {
-                var result = repo.RefreshTokens(dto, jwt);
+                var result = await repo.RefreshTokensAsync(dto, jwt);
 
                 if (result is null) { return Results.Unauthorized(); }
 
