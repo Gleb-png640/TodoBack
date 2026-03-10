@@ -14,23 +14,23 @@ namespace TodoBack.Repositories {
             _db = db;
         }
 
-        public UserTask Add(UserTask task) {
+        public async Task<UserTask> AddAsync(UserTask task) {
 
-            _db.Tasks.Add(task);
-            _db.SaveChanges();
+            await _db.Tasks.AddAsync(task);
+            await _db.SaveChangesAsync();
 
             return task;
         }
 
-        public bool Delete(UserTask task) {
+        public async Task<bool> DeleteAsync(UserTask task) {
 
-            _db.Remove(task);
-            _db.SaveChanges();
+            _db.Tasks.Remove(task);
+            await _db.SaveChangesAsync();
 
             return true;
         }
 
-        public IEnumerable<UserTask> GetPaged(GetPageQuery query, Guid UserId) {
+        public async Task<IEnumerable<UserTask>> GetPagedAsync(GetPageQuery query, Guid UserId) {
 
             IQueryable<UserTask> queryable = _db.Tasks
                 .Where(t => t.UserId == UserId)
@@ -44,33 +44,31 @@ namespace TodoBack.Repositories {
             int _page = query.page;
             int _pageSize = query.pageSize;
 
-            IEnumerable<UserTask> result = queryable
+            IEnumerable<UserTask> result = await queryable
                 .Skip( (_page - pageOffset) * _pageSize)
                 .Take(_pageSize)
-                .ToList();
+                .ToListAsync();
 
             return result;
         }
 
-
-
-        public UserTask? GetById(int id, Guid UserId) {
-            var task = _db.Tasks
+        public async Task<UserTask?> GetByIdAsync(int id, Guid UserId) {
+            var task = await _db.Tasks
                 .AsNoTracking()
-                .FirstOrDefault(t => t.UserId == UserId && t.TaskId == id);
+                .FirstOrDefaultAsync(t => t.UserId == UserId && t.TaskId == id);
 
             return task;
         }
 
-        public UserTask? GetByIdTracked(int id, Guid UserId)
+        public async Task<UserTask?> GetByIdTrackedAsync(int id, Guid UserId)
         {
-            var task = _db.Tasks
-                .FirstOrDefault(t => t.UserId == UserId && t.TaskId == id);
+            var task = await _db.Tasks
+                .FirstOrDefaultAsync(t => t.UserId == UserId && t.TaskId == id);
 
             return task;
         }
 
-        public UserTask ChangeExistingTask(UserTask task, UpdateUserTaskDto taskDto) {
+        public async Task<UserTask> ChangeExistingTaskAsync(UserTask task, UpdateUserTaskDto taskDto) {
 
             task.Name = taskDto.Name;
             task.Description = taskDto.Description;
@@ -80,17 +78,9 @@ namespace TodoBack.Repositories {
             task.From = taskDto.From;
             task.DueTo = taskDto.DueTo;
 
-            Update(task);
+            await _db.SaveChangesAsync();
             return task;
         }
 
-        private bool Update(UserTask task)
-        {
-
-            _db.Update(task);
-            _db.SaveChanges();
-
-            return true;
-        }
     }
 }

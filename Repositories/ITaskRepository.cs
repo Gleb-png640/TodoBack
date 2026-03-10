@@ -6,16 +6,16 @@ namespace TodoBack.Repositories
 {
     public interface ITaskRepository
     {
-        public UserTask Add(UserTask task);
+        public Task<UserTask> AddAsync(UserTask task);
 
-        public IEnumerable<UserTask> GetPaged(GetPageQuery query, Guid UserId);
+        public Task<IEnumerable<UserTask>> GetPagedAsync(GetPageQuery query, Guid UserId);
 
-        public UserTask? GetById(int id, Guid UserId);
-        public UserTask? GetByIdTracked(int id, Guid UserId);
+        public Task<UserTask?> GetByIdAsync(int id, Guid UserId);
+        public Task<UserTask?> GetByIdTrackedAsync(int id, Guid UserId);
 
 
-		public bool Delete(UserTask task);
+		public Task<bool> DeleteAsync(UserTask task);
 
-        public UserTask ChangeExistingTask(UserTask task, UpdateUserTaskDto taskDto);
+        public Task<UserTask> ChangeExistingTaskAsync(UserTask task, UpdateUserTaskDto taskDto);
     }
 }
