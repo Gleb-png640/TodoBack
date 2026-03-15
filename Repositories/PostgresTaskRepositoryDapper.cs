@@ -18,9 +18,22 @@ namespace TodoBack.Repositories
         }
 
 
-        public Task<UserTask> AddAsync(UserTask task)
+        public async Task<UserTask> AddAsync(UserTask task)
         {
-            throw new NotImplementedException();
+            const string sql =
+                """
+                INSERT INTO "Tasks" ("TaskId", "Name", "Description", "IsDone", "UserId", "CreatedAt", "DueTo", "From", "TaskType")
+                VALUES (@TaskId, @Name, @Description, @IsDone, @UserId, @CreatedAt, @DueTo, @From, @TaskType)
+                """;
+
+            using (var connection = GetConnection()) 
+            {
+                var res = await connection.ExecuteAsync(sql, task);
+
+                if (res != 1) { throw new Exception("Number of tasks added to bd is not equal to 1"); }
+
+                return task;
+            }
         }
 
         public Task<UserTask> ChangeExistingTaskAsync(UserTask task, UpdateUserTaskDto taskDto)
@@ -30,15 +43,15 @@ namespace TodoBack.Repositories
 
         public async Task<bool> DeleteAsync(UserTask task)
         {
-
-            using (var connection = GetConnection()) 
-            {
-                const string sql =
+            const string sql =
                     """
                     DELETE 
                     FROM "Tasks"
                     WHERE "TaskId" = @taskId
                     """;
+
+            using (var connection = GetConnection()) 
+            {
 
                 var res = await connection.ExecuteAsync(sql, new { taskId = task.TaskId });
 
@@ -48,14 +61,15 @@ namespace TodoBack.Repositories
 
         public async Task<UserTask?> GetByIdAsync(int id, Guid UserId)
         {
-            using (var connection = GetConnection()) 
-            {
-                const string sql =
+            const string sql =
                     """
                     SELECT * 
                     FROM "Tasks"
                     WHERE "UserId" = @UserId AND "TaskId" = @id
                     """;
+
+            using (var connection = GetConnection()) 
+            {
 
                 return await connection.QueryFirstOrDefaultAsync<UserTask?>(sql, new 
                     {
@@ -67,14 +81,15 @@ namespace TodoBack.Repositories
 
         public async Task<UserTask?> GetByIdTrackedAsync(int id, Guid UserId)
         {
-            using (var connection = GetConnection())
-            {
-                const string sql =
+            const string sql =
                     """
                     SELECT * 
                     FROM "Tasks"
                     WHERE "UserId" = @UserId AND "TaskId" = @id
                     """;
+
+            using (var connection = GetConnection())
+            {
 
                 return await connection.QueryFirstOrDefaultAsync<UserTask?>(sql, new
                 {
@@ -86,9 +101,8 @@ namespace TodoBack.Repositories
 
         public async Task<IEnumerable<UserTask>> GetPagedAsync(GetPageQuery query, Guid UserId)
         {
-            using (var connection = GetConnection())
-            {
-                const string sql =
+
+            const string sql =
                 """
                     SELECT  *
                     FROM "Tasks"
@@ -96,6 +110,9 @@ namespace TodoBack.Repositories
                     ORDER BY "TaskId"
                     LIMIT @PageSize OFFSET @Offset
                 """;
+
+            using (var connection = GetConnection())
+            {
 
                 return await connection.QueryAsync<UserTask>(sql, new
                 {
