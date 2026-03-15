@@ -28,9 +28,22 @@ namespace TodoBack.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<bool> DeleteAsync(UserTask task)
+        public async Task<bool> DeleteAsync(UserTask task)
         {
-            throw new NotImplementedException();
+
+            using (var connection = GetConnection()) 
+            {
+                const string sql =
+                    """
+                    DELETE 
+                    FROM "Tasks"
+                    WHERE "TaskId" = @taskId
+                    """;
+
+                var res = await connection.ExecuteAsync(sql, new { taskId = task.TaskId });
+
+                return res == 1 ? true : false; 
+            }
         }
 
         public async Task<UserTask?> GetByIdAsync(int id, Guid UserId)
@@ -73,9 +86,9 @@ namespace TodoBack.Repositories
 
         public async Task<IEnumerable<UserTask>> GetPagedAsync(GetPageQuery query, Guid UserId)
         {
-            using var connection = GetConnection();
-
-            const string sql =
+            using (var connection = GetConnection())
+            {
+                const string sql =
                 """
                     SELECT  *
                     FROM "Tasks"
@@ -84,13 +97,13 @@ namespace TodoBack.Repositories
                     LIMIT @PageSize OFFSET @Offset
                 """;
 
-            return await connection.QueryAsync<UserTask>(sql, new 
-            { 
-                UserId = UserId,
-                PageSize = query.pageSize,
-                Offset = query.pageSize * (query.page - 1)
-            });
-
+                return await connection.QueryAsync<UserTask>(sql, new
+                {
+                    UserId = UserId,
+                    PageSize = query.pageSize,
+                    Offset = query.pageSize * (query.page - 1)
+                });
+            }
         }
 
 
