@@ -22,15 +22,16 @@ namespace TodoBack.Repositories
         {
             const string sql =
                 """
-                INSERT INTO "Tasks" ("TaskId", "Name", "Description", "IsDone", "UserId", "CreatedAt", "DueTo", "From", "TaskType")
-                VALUES (@TaskId, @Name, @Description, @IsDone, @UserId, @CreatedAt, @DueTo, @From, @TaskType)
+                INSERT INTO "Tasks" ("Name", "Description", "IsDone", "UserId", "CreatedAt", "DueTo", "From", "TaskType")
+                VALUES (@Name, @Description, @IsDone, @UserId, @CreatedAt, @DueTo, @From, @TaskType)
+                Returning "TaskId"
                 """;
 
             using (var connection = GetConnection()) 
             {
-                var res = await connection.ExecuteAsync(sql, task);
+                var taskId = await connection.ExecuteScalarAsync<int>(sql, task);
 
-                if (res != 1) { throw new Exception("Number of tasks added to bd is not equal to 1"); }
+                task.TaskId = taskId;
 
                 return task;
             }
