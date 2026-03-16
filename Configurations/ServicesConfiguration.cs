@@ -52,8 +52,8 @@ namespace TodoBack.Configurations
 
             builder.Services.AddScoped<IValidator<GetPageQuery>, GetPageQueryValidation>();
 
-            //builder.Services.AddScoped<ITaskRepository, PostgresTaskRepository>();
-            builder.Services.AddScoped<ITaskRepository, PostgresTaskRepositoryDapper>();
+            builder.Services.AddScoped<ITaskRepository, PostgresTaskRepository>();
+            //builder.Services.AddScoped<ITaskRepository, PostgresTaskRepositoryDapper>();
             builder.Services.AddScoped<IUserRepository, PostgresUserRepository>();
 
             builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
