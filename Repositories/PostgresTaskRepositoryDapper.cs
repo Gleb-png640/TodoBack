@@ -37,9 +37,24 @@ namespace TodoBack.Repositories
             }
         }
 
-        public Task<UserTask> ChangeExistingTaskAsync(UserTask task, UpdateUserTaskDto taskDto)
+        public async Task<UserTask> ChangeExistingTaskAsync(UserTask task, UpdateUserTaskDto taskDto)
         {
-            throw new NotImplementedException();
+            const string sql =
+                """
+                UPDATE "Tasks"
+                SET "Name" = @Name, "Description" = @Description, "IsDone" = @IsDone, "From" = @From, "DueTo" = @DueTo
+                WHERE "TaskId" = @TaskID
+                """;
+
+            using (var connection = GetConnection()) 
+            {
+                var res = await connection.ExecuteAsync(sql, taskDto);
+
+                if (res != 1) { throw new Exception("Somehow updated an incorrect amount of tasks"); }
+
+                return task;
+            }
+
         }
 
         public async Task<bool> DeleteAsync(UserTask task)
@@ -56,7 +71,7 @@ namespace TodoBack.Repositories
 
                 var res = await connection.ExecuteAsync(sql, new { taskId = task.TaskId });
 
-                return res == 1 ? true : false; 
+                return res == 1; 
             }
         }
 
