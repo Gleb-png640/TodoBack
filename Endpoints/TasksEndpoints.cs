@@ -83,7 +83,9 @@ namespace TodoBack.Endpoints {
 
                 if (task is null) { return Results.NotFound(); }
 
-                await repo.DeleteAsync(task);
+                var result = await repo.DeleteAsync(task);
+
+                if (!result) { throw new Exception("Deleted incorrect amount of tasks somehow"); }
 
                 return Results.NoContent();
             });
