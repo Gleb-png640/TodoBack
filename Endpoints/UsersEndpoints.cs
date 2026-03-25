@@ -18,7 +18,6 @@ namespace TodoBack.Endpoints {
             // POST /users/register
             group.MapPost("/register", async (CreateUserDto dto, IUserRepository repo, IPasswordHasher<User> passwordHasher, IValidator<CreateUserDto> validator, JwtTokenServices jwt) =>
             {
-
                 // Validation
                 var result = await validator.ValidateAsync(dto);
                 if (!result.IsValid) { return Results.ValidationProblem(result.ToDictionary()); }
