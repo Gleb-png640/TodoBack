@@ -5,7 +5,7 @@ namespace TodoBack.Repositories.Interfaces
 {
     public interface IFriendshipRepository
     {
-        public Task<Friendship> SendRequestAsync(SendFriendshipRequestDto dto);
+        public Task<Friendship> SendRequestAsync(SendFriendshipRequest dto);
 
         public Task<Friendship?> FindFriendshipAsync(Guid senderId, Guid recieverId);
     }
