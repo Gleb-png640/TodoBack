@@ -15,7 +15,10 @@ namespace TodoBack.Models.Users {
 
         public ICollection<UserTask> Tasks { get; set; } = new List<UserTask>();
 
-        public string?  RefreshToken { get; set; }
+        public ICollection<Friendship> ReceivedFriendships { get; set; } = new List<Friendship>();
+        public ICollection<Friendship> SentFriendships { get; set; } = new List<Friendship>();
+
+        public string? RefreshToken { get; set; }
         public DateTime RefreshTokenExpiryTime { get; set; }
     }
 }

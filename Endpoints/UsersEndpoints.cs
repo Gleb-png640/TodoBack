@@ -26,6 +26,9 @@ namespace TodoBack.Endpoints {
                 // Searching by email in DB
                 if (await repo.GetByEmailAsync(dto.Email) is not null) { return Results.Conflict("User already exists"); }
 
+                // Checking if UserName is already taken
+                if (await repo.GetByUserNameAsync(dto.UserName) is not null) { return Results.Conflict("User name is already taken"); }
+
                 var user = dto.CreateDtoToEntity(passwordHasher);
 
                 await repo.AddUserAsync(user);

@@ -28,6 +28,12 @@ namespace TodoBack.Repositories {
                 .FirstOrDefaultAsync(u => u.Email == email);
         }
 
+        public async Task<User?> GetByUserNameAsync(string userName)
+        {
+            return await _db.Users
+                .FirstOrDefaultAsync(u => u.UserName == userName);
+        }
+
         public async Task<TokenResponeDto?> LoginAsync(LoginUserDto dto, IPasswordHasher<User> passwordHasher, JwtTokenServices jwt) {
 
             // Searching by email in DB

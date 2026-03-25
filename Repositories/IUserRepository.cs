@@ -10,6 +10,7 @@ namespace TodoBack.Repositories {
         public Task<User> AddUserAsync(User user);
 
         public Task<User?> GetByEmailAsync(string email);
+        public Task<User?> GetByUserNameAsync(string userName);
 
         public Task<TokenResponeDto?> LoginAsync(LoginUserDto dto, IPasswordHasher<User> passwordHasher, JwtTokenServices jwt);
 
