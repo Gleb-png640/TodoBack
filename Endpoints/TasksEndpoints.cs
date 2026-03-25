@@ -4,7 +4,7 @@ using System.Security.Claims;
 using TodoBack.Dtos.Tasks;
 using TodoBack.Mapping;
 using TodoBack.QueryParameters;
-using TodoBack.Repositories;
+using TodoBack.Repositories.Interfaces;
 
 namespace TodoBack.Endpoints {
     public static class TasksEndpoints {

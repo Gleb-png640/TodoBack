@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using TodoBack.Models.Friendships;
 using TodoBack.Models.Tasks;
 using TodoBack.Models.Users;
 

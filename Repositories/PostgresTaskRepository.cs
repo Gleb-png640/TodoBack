@@ -3,6 +3,7 @@ using TodoBack.Data;
 using TodoBack.Dtos.Tasks;
 using TodoBack.Models.Tasks;
 using TodoBack.QueryParameters;
+using TodoBack.Repositories.Interfaces;
 
 namespace TodoBack.Repositories {
     public class PostgresTaskRepository : ITaskRepository {

@@ -3,7 +3,7 @@ using TodoBack.Dtos.Users;
 using TodoBack.Models.Users;
 using TodoBack.Services.Security;
 
-namespace TodoBack.Repositories {
+namespace TodoBack.Repositories.Interfaces {
 
     public interface IUserRepository 
     {

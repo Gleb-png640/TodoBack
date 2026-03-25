@@ -1,5 +1,5 @@
 ﻿using TodoBack.Dtos.Users;
-using TodoBack.Repositories;
+using TodoBack.Repositories.Interfaces;
 using TodoBack.Services.Security;
 
 namespace TodoBack.Endpoints {

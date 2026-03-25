@@ -2,7 +2,7 @@
 using TodoBack.Models.Tasks;
 using TodoBack.QueryParameters;
 
-namespace TodoBack.Repositories
+namespace TodoBack.Repositories.Interfaces
 {
     public interface ITaskRepository
     {

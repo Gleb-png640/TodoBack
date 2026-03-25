@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using TodoBack.Dtos.Users;
 using TodoBack.Mapping;
 using TodoBack.Models.Users;
-using TodoBack.Repositories;
+using TodoBack.Repositories.Interfaces;
 using TodoBack.Services.Security;
 
 namespace TodoBack.Endpoints {

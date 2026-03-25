@@ -22,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Dtos\Новая папка\" />
     <Folder Include="Migrations\" />
   </ItemGroup>
 

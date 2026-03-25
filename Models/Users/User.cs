@@ -1,4 +1,5 @@
-﻿using TodoBack.Models.Tasks;
+﻿using TodoBack.Models.Friendships;
+using TodoBack.Models.Tasks;
 
 namespace TodoBack.Models.Users {
 

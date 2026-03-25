@@ -4,6 +4,7 @@ using System.Data;
 using TodoBack.Dtos.Tasks;
 using TodoBack.Models.Tasks;
 using TodoBack.QueryParameters;
+using TodoBack.Repositories.Interfaces;
 
 namespace TodoBack.Repositories
 {

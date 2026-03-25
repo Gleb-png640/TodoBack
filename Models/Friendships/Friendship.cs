@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using TodoBack.Models.Users;
 
-namespace TodoBack.Models.Users
+namespace TodoBack.Models.Friendships
 {
     public class Friendship
     {
