@@ -56,6 +56,7 @@ namespace TodoBack.Configurations
             builder.Services.AddScoped<ITaskRepository, PostgresTaskRepository>();
             //builder.Services.AddScoped<ITaskRepository, PostgresTaskRepositoryDapper>();
             builder.Services.AddScoped<IUserRepository, PostgresUserRepository>();
+            builder.Services.AddScoped<IFriendshipRepository, PostgresFriendshipRepository>();
 
             builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 

@@ -18,6 +18,7 @@ namespace TodoBack
             app.MapCommonTasksEndpoints();
             app.MapUsersEndpoints();
             app.MapAuthEndpoints();
+            app.MapFriendshipEndpoints();
 
             if (app.Environment.IsDevelopment()) {
                 app.UseSwagger();
