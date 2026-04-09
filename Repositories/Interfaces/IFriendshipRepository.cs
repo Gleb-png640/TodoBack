@@ -11,7 +11,7 @@ namespace TodoBack.Repositories.Interfaces
         public Task<Friendship?> FindFriendshipAsync(Guid senderId, Guid recieverId);
         public Task<Friendship?> FindFriendshipTrackedAsync(Guid senderId, Guid recieverId);
 
-        public Task<ICollection<Friendship>> GetFriendshipsAsync(Guid userId, FriendshipsListType type);
-        public Task<ICollection<Friendship>> GetFriendshipsTrackedAsync(Guid userId, FriendshipsListType type);
+        public Task<ICollection<Friendship>> GetFriendshipsAsync(Guid userId, int friendshipRequestType);
+        public Task<ICollection<Friendship>> GetFriendshipsTrackedAsync(Guid userId, int friendshipRequestType);
     }
 }

@@ -40,8 +40,9 @@ namespace TodoBack.Repositories
         }
 
 
-        public async Task<ICollection<Friendship>> GetFriendshipsAsync(Guid userId, FriendshipsListType type)
+        public async Task<ICollection<Friendship>> GetFriendshipsAsync(Guid userId, int friendshipRequestType)
         {
+            var type = (FriendshipsListType)friendshipRequestType;
             IQueryable<Friendship> query = _db.Friendship.AsNoTracking();
 
             switch (type)
@@ -63,8 +64,9 @@ namespace TodoBack.Repositories
             return list;
         }
 
-        public async Task<ICollection<Friendship>> GetFriendshipsTrackedAsync(Guid userId, FriendshipsListType type)
+        public async Task<ICollection<Friendship>> GetFriendshipsTrackedAsync(Guid userId, int friendshipRequestType)
         {
+            var type = (FriendshipsListType)friendshipRequestType;
             IQueryable<Friendship> query = _db.Friendship;
 
             switch (type) 

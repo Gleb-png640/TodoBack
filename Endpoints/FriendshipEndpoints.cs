@@ -2,7 +2,6 @@
 using TodoBack.Dtos.Friendships;
 using TodoBack.Mapping;
 using TodoBack.Repositories.Interfaces;
-using static TodoBack.Repositories.PostgresFriendshipRepository;
 
 namespace TodoBack.Endpoints
 {
@@ -16,7 +15,7 @@ namespace TodoBack.Endpoints
             group.MapGet("", async (GetFriendshipsQuery query, IFriendshipRepository repo, ClaimsPrincipal user) => 
             {
                 var userId = Guid.Parse(user.FindFirst(ClaimTypes.NameIdentifier)!.Value);
-                var res = await repo.GetFriendshipsAsync(userId, (FriendshipsListType)query.FriendshipListType);
+                var res = await repo.GetFriendshipsAsync(userId, query.FriendshipListType);
                 return Results.Ok(res);
             });
 
