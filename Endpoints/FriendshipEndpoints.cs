@@ -12,16 +12,18 @@ namespace TodoBack.Endpoints
             var group = app.MapGroup("/friendship").RequireAuthorization();
 
 
-            group.MapGet("", async (GetFriendshipsQuery query, IFriendshipRepository repo, ClaimsPrincipal user) => 
+            group.MapGet("", async ([AsParameters] GetFriendshipsQuery query, IFriendshipRepository repo, ClaimsPrincipal user) => 
             {
                 var userId = Guid.Parse(user.FindFirst(ClaimTypes.NameIdentifier)!.Value);
                 var res = await repo.GetFriendshipsAsync(userId, query.FriendshipListType);
                 return Results.Ok(res);
             });
 
-            group.MapPost("/add", async (SendFriendshipRequestDto dto, IFriendshipRepository repo, ClaimsPrincipal user) =>
+            group.MapPost("/add", async ([AsParameters] SendFriendshipRequestDto dto, IFriendshipRepository repo, ClaimsPrincipal user) =>
             {
-                var request = dto.DtoToRequest(Guid.Parse(user.FindFirst(ClaimTypes.NameIdentifier)!.Value));
+                var userId = Guid.Parse(user.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+
+                var request = dto.DtoToRequest(userId);
 
                 var friendship = await repo.FindFriendshipTrackedAsync(request.SenderId, request.RecieverId);
 

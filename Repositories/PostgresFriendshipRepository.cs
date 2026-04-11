@@ -13,12 +13,14 @@ namespace TodoBack.Repositories
 
         public PostgresFriendshipRepository(TodoDbContext db) => _db = db;
 
+
         public async Task<Friendship?> FindFriendshipTrackedAsync(Guid senderId, Guid recieverId)
         {
             return await _db.Friendship
                 .Where(f => f.SenderId == senderId && f.RecieverId == recieverId)
                 .FirstOrDefaultAsync();
         }
+
 
         public async Task<Friendship?> FindFriendshipAsync(Guid senderId, Guid recieverId)
         {
@@ -27,6 +29,7 @@ namespace TodoBack.Repositories
                 .AsNoTracking()
                 .FirstOrDefaultAsync();
         }
+
 
         public async Task<Friendship> SendRequestAsync(SendFriendshipRequest dto) 
         {

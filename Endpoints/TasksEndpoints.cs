@@ -39,7 +39,7 @@ namespace TodoBack.Endpoints {
 
 
             // POST /tasks
-            group.MapPost("/", async (CreateUserTaskDto taskDto, ITaskRepository repo, IValidator<CreateUserTaskDto> validator, ClaimsPrincipal user) =>
+            group.MapPost("/", async ([AsParameters] CreateUserTaskDto taskDto, ITaskRepository repo, IValidator<CreateUserTaskDto> validator, ClaimsPrincipal user) =>
             {
 
                 // validation
@@ -55,7 +55,7 @@ namespace TodoBack.Endpoints {
 
 
             // PUT /tasks/1
-            group.MapPut("/{id}", async (int id, UpdateUserTaskDto taskDto, ITaskRepository repo, IValidator<UpdateUserTaskDto> validator, ClaimsPrincipal user) => 
+            group.MapPut("/{id}", async (int id, [AsParameters] UpdateUserTaskDto taskDto, ITaskRepository repo, IValidator<UpdateUserTaskDto> validator, ClaimsPrincipal user) => 
             {
 
                 var userId = Guid.Parse(user.FindFirst(ClaimTypes.NameIdentifier)!.Value); 

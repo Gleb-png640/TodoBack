@@ -16,7 +16,7 @@ namespace TodoBack.Endpoints {
 
 
             // POST /users/register
-            group.MapPost("/register", async (CreateUserDto dto, IUserRepository repo, IPasswordHasher<User> passwordHasher, IValidator<CreateUserDto> validator, JwtTokenServices jwt) =>
+            group.MapPost("/register", async ([AsParameters] CreateUserDto dto, IUserRepository repo, IPasswordHasher<User> passwordHasher, IValidator<CreateUserDto> validator, JwtTokenServices jwt) =>
             {
                 // Validation
                 var result = await validator.ValidateAsync(dto);
@@ -37,7 +37,7 @@ namespace TodoBack.Endpoints {
 
 
             // POST /users/login 
-            group.MapPost("/login", async (LoginUserDto dto, IValidator<LoginUserDto> validator, IUserRepository repo, IPasswordHasher<User> passwordHasher, JwtTokenServices jwt) => 
+            group.MapPost("/login", async ([AsParameters] LoginUserDto dto, IValidator<LoginUserDto> validator, IUserRepository repo, IPasswordHasher<User> passwordHasher, JwtTokenServices jwt) => 
             {
                 var result = await validator.ValidateAsync(dto);
                 if (!result.IsValid) { return Results.ValidationProblem(result.ToDictionary()); }
