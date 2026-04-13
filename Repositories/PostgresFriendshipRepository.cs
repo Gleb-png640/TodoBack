@@ -38,36 +38,14 @@ namespace TodoBack.Repositories
         }
 
 
-        public async Task<ICollection<Friendship>> GetFriendshipsAsync(Guid userId, int friendshipRequestType)
-        {
-            var type = (FriendshipsListType)friendshipRequestType;
-            IQueryable<Friendship> query = _db.Friendship.AsNoTracking();
-
-            switch (type)
-            {
-                case FriendshipsListType.Sent:
-                    query = query.Where(f => f.SenderId == userId);
-                    break;
-
-                case FriendshipsListType.Received:
-                    query = query.Where(f => f.RecieverId == userId);
-                    break;
-
-                default:
-                    throw new Exception("incorrect FriendshipsListType");
-            }
-
-            var list = await query.ToListAsync();
-
-            return list;
-        }
-
-        public async Task<ICollection<Friendship>> GetFriendshipsTrackedAsync(Guid userId, int friendshipRequestType)
+        public async Task<ICollection<Friendship>> GetFriendshipsAsync(Guid userId, int friendshipRequestType, bool tracked = true)
         {
             var type = (FriendshipsListType)friendshipRequestType;
             IQueryable<Friendship> query = _db.Friendship;
 
-            switch (type) 
+            if (!tracked) { query = query.AsNoTracking(); }
+
+            switch (type)
             {
                 case FriendshipsListType.Sent:
                     query = query.Where(f => f.SenderId == userId);
