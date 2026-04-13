@@ -5,7 +5,7 @@ namespace TodoBack.Mapping
 {
     public static class FriendshipMapping
     {
-        public static Friendship RequestToEntity(this SendFriendshipRequest dto) 
+        public static Friendship RequestToEntity(this FriendshipRequest dto) 
         {
             return new Friendship
             {
@@ -14,9 +14,9 @@ namespace TodoBack.Mapping
             };
         }
 
-        public static SendFriendshipRequest DtoToRequest(this SendFriendshipRequestDto dto, Guid senderId)
+        public static FriendshipRequest DtoToRequest(this SendFriendshipRequestDto dto, Guid senderId)
         {
-            return new SendFriendshipRequest
+            return new FriendshipRequest
             {
                 SenderId = senderId,
                 RecieverId = dto.RecieverId

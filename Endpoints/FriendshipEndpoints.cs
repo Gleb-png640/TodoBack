@@ -33,6 +33,19 @@ namespace TodoBack.Endpoints
 
                 return Results.Ok(friendship);
             });
+
+            group.MapPut("/respond", async ([AsParameters] FriendshipResponseDto dto, IFriendshipRepository repo, ClaimsPrincipal user) => 
+            {
+                var userId = Guid.Parse(user.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+
+                var friendship = await repo.FindFriendshipAsync(dto.SenderId, userId);
+
+                if (friendship is null) { throw new Exception("Could not find a friendship"); }
+
+                friendship = await repo.RequestRespond(friendship, dto.Accepted);
+
+                return Results.Ok(friendship);
+            });
         }
 
     }

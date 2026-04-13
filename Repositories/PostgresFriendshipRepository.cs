@@ -26,7 +26,7 @@ namespace TodoBack.Repositories
         }
 
 
-        public async Task<Friendship> SendRequestAsync(SendFriendshipRequest dto) 
+        public async Task<Friendship> SendRequestAsync(FriendshipRequest dto) 
         {
 
             var friendship = dto.RequestToEntity();
@@ -62,6 +62,14 @@ namespace TodoBack.Repositories
             var list = await query.ToListAsync();
 
             return list;
+        }
+
+        public async Task<Friendship> RequestRespond(Friendship friendship, bool accepted) 
+        {
+            friendship.FriendshipStatus = accepted ? FriendshipStatus.accepted: FriendshipStatus.denied;
+            await _db.SaveChangesAsync();
+
+            return friendship;
         }
 
         public enum FriendshipsListType 
