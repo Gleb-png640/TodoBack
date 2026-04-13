@@ -35,6 +35,7 @@ namespace TodoBack.Repositories {
 
             IQueryable<UserTask> queryable = _db.Tasks
                 .Where(t => t.UserId == UserId)
+                .OrderBy(t => t.TaskId)
                 .AsNoTracking();
 
             if (query.isDone is not null) {
@@ -45,7 +46,7 @@ namespace TodoBack.Repositories {
             int _page = query.page;
             int _pageSize = query.pageSize;
 
-            IEnumerable<UserTask> result = await queryable
+            var result = await queryable
                 .Skip( (_page - pageOffset) * _pageSize)
                 .Take(_pageSize)
                 .ToListAsync();
