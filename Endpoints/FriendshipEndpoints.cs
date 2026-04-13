@@ -25,7 +25,7 @@ namespace TodoBack.Endpoints
 
                 var request = dto.DtoToRequest(userId);
 
-                var friendship = await repo.FindFriendshipTrackedAsync(request.SenderId, request.RecieverId);
+                var friendship = await repo.FindFriendshipAsync(request.SenderId, request.RecieverId, false);
 
                 if (friendship is not null) { return Results.Conflict("Request already exists"); }
 
