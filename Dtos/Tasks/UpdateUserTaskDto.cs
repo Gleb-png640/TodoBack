@@ -1,5 +1,4 @@
-﻿using TodoBack.Models.Tasks;
-
+﻿
 namespace TodoBack.Dtos.Tasks {
     public class UpdateUserTaskDto
     {

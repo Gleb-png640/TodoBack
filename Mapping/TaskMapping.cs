@@ -26,12 +26,12 @@ namespace TodoBack.Mapping {
 
             return new UserTask
             {
-				UserId = userId,
+                UserId = userId,
 
-				Name = task.Name,
-                Description = task.Description,
+                Name = task.Name,
+                Description = task.Description ?? string.Empty,
 
-                IsDone = task.IsDone,
+                IsDone = task.IsDone ?? false,
 
                 TaskType = task.TaskType,
 
